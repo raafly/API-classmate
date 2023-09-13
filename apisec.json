@@ -1,0 +1,135 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "description": "use for get data student",
+      "contact": {
+        "name": "rafly",
+        "email": "raflynr@gmail.com",
+        "url": "github.com/raafly"
+      },
+      "title":"API for classmate",
+      "version":"1.0"
+    },
+    "servers": [
+      {"url":"https://localhost:3000/api/v1"}
+    ],
+    "paths": {
+       "/students" : {
+            "get" : {
+                "tags": ["Standar"],
+                "summary" : "for get all data",
+                "description" : "use this for get all data student",
+                "responses": {
+                    "201" : {
+                        "description": "success get data",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "data" : {
+                                            "type": "array",
+                                            "items" : {
+                                                "type": "object",
+                                                "properties": {
+                                                    "nama" : {
+                                                        "type": "string"
+                                                    },
+                                                    "absen" : {
+                                                        "type": "integer"
+                                                    },
+                                                    "gender" : {
+                                                        "type": "string"
+                                                    },
+                                                    "nis" : {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500" : {
+                        "description": "server is busy"
+                    }
+                }
+            },
+            "post" : {
+                "tags": ["Standar"],
+                "summary": "for create data",
+                "description": "use this for create data",
+                "requestBody" : {
+                    "required": true,
+                    "content": {
+                        "application/json" : {
+                            "schema" : {
+                                "type": "object",
+                                "properties": {
+                                    "nama" : {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "absen" : {
+                                        "type": "integer",
+                                        "required": true
+                                    },
+                                    "gender" : {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "nis" : {
+                                        "type": "integer",
+                                        "required": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+       },
+       "/students/{studentsId}" : {
+            "get" : {
+                "tags": ["NIS"],
+                "summary": "get data use nis",
+                "description": "use this for get data by nis",
+                "parameters": [
+                    {
+                        "name": "studentsId",
+                        "in": "query",
+                        "description": "nis student"
+                    }
+                ],
+                "responses": {
+                    "201" : {
+                        "description": "success get data",
+                        "content": {
+                            "application/json" : {
+                                "schema" : {
+                                    "type": "object",
+                                    "properties": {
+                                        "nama" : {
+                                            "type": "string"
+                                        },
+                                        "absen" : {
+                                            "type": "integer"
+                                        },
+                                        "gender" : {
+                                            "type": "string"
+                                        },
+                                        "nis" : {
+                                            "type": "integer"
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+       }
+    }
+  }
+}
