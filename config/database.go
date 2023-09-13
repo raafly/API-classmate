@@ -1,11 +1,20 @@
 package config
 
 import (
-	"databsase/sql"
+	"database/sql"
 	"time"
-	"github.com/go-sql-driver/mysql"
+
+	"github.com/raafly/api-classmate/helper" 
 )
 
 func NewDB() *sql.DB {
-	sql.Open("mysql",)
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/catering")
+	helper.PanicIfError(err)
+
+	db.SetMaxIdleConns(10)
+	db.SetMaxOpenConns(100)
+	db.SetConnMaxIdleTime(5 *time.Minute)
+	db.SetConnMaxLifetime(60 * time.Minute)
+
+	return db
 }
