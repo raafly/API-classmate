@@ -16,10 +16,12 @@ func NewStudentRepositoryImpl() StudentRepository {
 	return &studentRepositoryImpl{}
 }
 
-func (repository *studentRepositoryImpl) Insert(ctx context.Context, tx *sql.Tx, student entity.Student) {
+func (repository *studentRepositoryImpl) Insert(ctx context.Context, tx *sql.Tx, student entity.Student) entity.Student{
 	script := "INSERT INTO students(nama, absen, gender, nis) VALUES(?, ?, ?, ?)"
 	_, err := tx.ExecContext(ctx, script, student.Nama, student.Absen, student.Gender, student.Nis)
 	helper.PanicIfError(err)
+
+	return student
 }
 
 func (repository *studentRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []entity.Student {
@@ -37,7 +39,7 @@ func (repository *studentRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx
 
 	}
 	return students
-}
+} 
 
 
 func (repository *studentRepositoryImpl) FindById(ctx context.Context , tx *sql.Tx, studentNis int) (entity.Student, error) {
