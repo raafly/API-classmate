@@ -1,8 +1,9 @@
 package service
 
 import (
+	"github.com/raafly/api-classmate/repository"
 )
 
 type studentServiceImpl struct {
-	Student	
+	StudentRepository repository. 
 }
