@@ -24,17 +24,17 @@ func (controller *StudentControllerImpl) Insert(w http.ResponseWriter, r *http.R
 	studentCreateRequest := model.StudentCreateRequest{}
 	helper.ReadFromRequestBody(r, &studentCreateRequest)
 
-	_ = controller.StudentService.Insert(r.Context(), studentCreateRequest)
-	_ = model.WebResponse {
+	student := controller.StudentService.Insert(r.Context(), studentCreateRequest)
+	webResponse := model.WebResponse {
 		Code: 201,
 		Status: "OK",
+		Data: student,
 	}
+
+	helper.WriteToResponseBody(w, webResponse)
 }
 
 func (controller *StudentControllerImpl) FindAll(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	studentCreateRequest := model.StudentCreateRequest{}
-	helper.ReadFromRequestBody(r, &studentCreateRequest)
-
 	studentResponse := controller.StudentService.FindAll(r.Context())
 	webResponse := model.WebResponse {
 		Code: 201,
@@ -46,7 +46,7 @@ func (controller *StudentControllerImpl) FindAll(w http.ResponseWriter, r *http.
 }
 
 func (controller *StudentControllerImpl) FindById(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	studentId := params.ByName("studentId")
+	studentId := params.ByName("studentsId")
 	id, err := strconv.Atoi(studentId)
 	helper.PanicIfError(err)
 
@@ -61,7 +61,7 @@ func (controller *StudentControllerImpl) FindById(w http.ResponseWriter, r *http
 }
 
 func (controller *StudentControllerImpl) Delete(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-	studentId := params.ByName("studentId")
+	studentId := params.ByName("studentsId")
 	id, err := strconv.Atoi(studentId)
 	helper.PanicIfError(err)
 

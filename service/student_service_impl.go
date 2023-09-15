@@ -9,19 +9,20 @@ import (
 	"github.com/raafly/api-classmate/helper"
 	"github.com/raafly/api-classmate/model"
 	"github.com/raafly/api-classmate/repository"
+	"github.com/raafly/api-classmate/exception"
 )
 
 type studentServiceImpl struct {
 	StudentRepository repository.StudentRepository
 	DB *sql.DB
-	Validate *validator.Validate
+	Validate validator.Validate
 }
 
 func NewStudentServiceImpl(studentRepository repository.StudentRepository, DB *sql.DB, validate *validator.Validate) *studentServiceImpl {
 	return &studentServiceImpl{
 		StudentRepository: studentRepository,
 		DB: DB,
-		Validate: validate,
+		Validate: *validator.New(),
 	}
 }
 
@@ -59,7 +60,9 @@ func (service *studentServiceImpl) FindById(ctx context.Context, studentNis int)
 	defer helper.CommitOrRollback(tx)
 
 	student, err := service.StudentRepository.FindById(ctx, tx, studentNis)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	return helper.ToStudentResponse(student)
 }
@@ -69,5 +72,10 @@ func (service *studentServiceImpl) Delete(ctx context.Context, studentNis int)  
 	helper.PanicIfError(err)
 	defer helper.CommitOrRollback(tx)
 
-	service.StudentRepository.Delete(ctx, tx, studentNis)
+	student, err := service.StudentRepository.FindById(ctx, tx, studentNis)
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
+
+	service.StudentRepository.Delete(ctx, tx, student.Nis)
 }	

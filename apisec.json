@@ -17,6 +17,9 @@
        "/students" : {
             "get" : {
                 "tags": ["Standar"],
+                "security": [{
+                    "studentAuth": []
+                }],
                 "summary" : "for get all data",
                 "description" : "use this for get all data student",
                 "responses": {
@@ -58,6 +61,9 @@
                 }
             },
             "post" : {
+                "security": [{
+                    "studentAuth": []
+                }],
                 "tags": ["Standar"],
                 "summary": "for create data",
                 "description": "use this for create data",
@@ -93,6 +99,9 @@
        },
        "/students/{studentsId}" : {
             "get" : {
+                "security": [{
+                    "studentAuth": []
+                }],
                 "tags": ["NIS"],
                 "summary": "get data use nis",
                 "description": "use this for get data by nis",
@@ -131,6 +140,16 @@
             }
        }
         }
-    }
+    },
+    "components": {
+        "securitySchemes": {
+            "studentAuth" : {
+                "description": "authentication for api",
+                "type": "apiKey",
+                "in": "header",
+                "name": "API-Key"
+            }
+        }
+      }
 }
         

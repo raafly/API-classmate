@@ -2,14 +2,16 @@ package main
 
 import (
 	"net/http"
-	_ "github.com/go-sql-driver/mysql"
+
 	"github.com/go-playground/validator/v10"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/raafly/api-classmate/config"
 	"github.com/raafly/api-classmate/controller"
 	"github.com/raafly/api-classmate/helper"
 	"github.com/raafly/api-classmate/repository"
 	"github.com/raafly/api-classmate/routes"
 	"github.com/raafly/api-classmate/service"
+	"github.com/raafly/api-classmate/middleware"
 )
 
 func main() {
@@ -23,7 +25,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	err := server.ListenAndServe()

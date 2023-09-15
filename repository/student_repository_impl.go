@@ -25,7 +25,7 @@ func (repository *studentRepositoryImpl) Insert(ctx context.Context, tx *sql.Tx,
 }
 
 func (repository *studentRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []entity.Student {
-	script := "SELECT name, absen, gender, nis FROM students"
+	script := "SELECT nama, absen, gender, nis FROM students"
 	rows, err := tx.QueryContext(ctx, script)
 	helper.PanicIfError(err)
 	defer rows.Close()
